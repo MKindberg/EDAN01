@@ -1,0 +1,54 @@
+package exc3;
+
+import org.jacop.constraints.Alldiff;
+import org.jacop.constraints.LinearInt;
+import org.jacop.constraints.XplusYeqZ;
+import org.jacop.core.IntVar;
+import org.jacop.core.Store;
+import org.jacop.search.DepthFirstSearch;
+import org.jacop.search.IndomainMin;
+import org.jacop.search.PrintOutListener;
+import org.jacop.search.Search;
+import org.jacop.search.SelectChoicePoint;
+import org.jacop.search.SimpleSelect;
+
+public class Chandelier {
+	public static void main(String[] args) {
+		long T1, T2, T;
+		T1 = System.currentTimeMillis();
+		balance();
+		T2 = System.currentTimeMillis();
+		T = T2 - T1;
+		System.out.println("\n\t*** Execution time = " + T + " ms");
+	}
+
+	private static void balance() {
+		Store store = new Store();
+
+		IntVar a = new IntVar(store, "a", 1, 9);
+		IntVar b = new IntVar(store, "b", 1, 9);
+		IntVar c = new IntVar(store, "c", 1, 9);
+		IntVar d = new IntVar(store, "d", 1, 9);
+		IntVar e = new IntVar(store, "e", 1, 9);
+		IntVar f = new IntVar(store, "f", 1, 9);
+		IntVar g = new IntVar(store, "g", 1, 9);
+		IntVar h = new IntVar(store, "h", 1, 9);
+		IntVar i = new IntVar(store, "i", 1, 9);
+
+		IntVar[] weights = { a, b, c, d, e, f, g, h, i };
+		store.impose(new Alldiff(weights));
+
+		store.impose(new XplusYeqZ(c, b, a));
+		store.impose(new XplusYeqZ(d, e, f));
+		store.impose(new XplusYeqZ(g, h, i));
+		store.impose(new LinearInt(store, weights, new int[] { 1, 1, 1, -1, -1, -1, -1, -1, -1 }, "==", 0));
+
+		Search<IntVar> search = new DepthFirstSearch<IntVar>();
+		SelectChoicePoint<IntVar> select = new SimpleSelect<IntVar>(weights, null, new IndomainMin<IntVar>());
+		
+		search.setSolutionListener(new PrintOutListener<IntVar>());
+		
+		
+
+	}
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="org.jacop.constraints.XeqY"/>
+<fullyQualifiedTypeName name="org.jacop.search.IndomainMin"/>
+<fullyQualifiedTypeName name="org.jacop.constraints.XmulYeqC"/>
+<fullyQualifiedTypeName name="org.jacop.constraints.XplusYeqC"/>
+<fullyQualifiedTypeName name="org.jacop.fz.Constraints"/>
+<fullyQualifiedTypeName name="org.jacop.constraints.XplusYeqZ"/>
+<fullyQualifiedTypeName name="org.jacop.search.DepthFirstSearch"/>
+<fullyQualifiedTypeName name="org.jacop.search.SelectChoicePoint"/>
+<fullyQualifiedTypeName name="org.jacop.search.PrintOutListener"/>
+<fullyQualifiedTypeName name="org.jacop.core.Store"/>
+<fullyQualifiedTypeName name="org.jacop.core.IntVar"/>
+<fullyQualifiedTypeName name="org.jacop.constraints.Sum"/>
+</qualifiedTypeNameHistroy>

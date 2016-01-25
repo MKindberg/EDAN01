@@ -1,0 +1,122 @@
+package exc3;
+
+import java.util.ArrayList;
+
+import org.jacop.constraints.Alldiff;
+import org.jacop.constraints.Linear;
+import org.jacop.core.IntVar;
+import org.jacop.core.Store;
+import org.jacop.search.DepthFirstSearch;
+import org.jacop.search.IndomainMin;
+import org.jacop.search.PrintOutListener;
+import org.jacop.search.Search;
+import org.jacop.search.SelectChoicePoint;
+import org.jacop.search.SimpleSelect;
+import org.jacop.search.SmallestDomain;
+
+public class Chandelier {
+	public static void main(String[] args) {
+		long T1, T2, T;
+		T1 = System.currentTimeMillis();
+
+		chandelier();
+
+		T2 = System.currentTimeMillis();
+		T = T2 - T1;
+		System.out.println("\n\t*** Execution time = " + T + " ms");
+	}
+
+	static void chandelier() {
+
+		Store store = new Store();
+
+		IntVar a = new IntVar(store, "a", 1, 9);
+		IntVar b = new IntVar(store, "b", 1, 9);
+		IntVar c = new IntVar(store, "c", 1, 9);
+		IntVar d = new IntVar(store, "d", 1, 9);
+		IntVar e = new IntVar(store, "e", 1, 9);
+		IntVar f = new IntVar(store, "f", 1, 9);
+		IntVar g = new IntVar(store, "g", 1, 9);
+		IntVar h = new IntVar(store, "h", 1, 9);
+		IntVar i = new IntVar(store, "i", 1, 9);
+
+		IntVar weights[] = { a, b, c, d, e, f, g, h, i };
+		store.impose(new Alldiff(weights));
+
+		// weight locations and positions in each of the 3 "subtrees"
+		ArrayList<IntVar> l1w = new ArrayList<IntVar>();
+		l1w.add(a);
+		l1w.add(b);
+		l1w.add(c);
+
+		ArrayList<Integer> l1p = new ArrayList<Integer>();
+		l1p.add(-2);
+		l1p.add(1);
+		l1p.add(2);
+
+		ArrayList<IntVar> r1w = new ArrayList<IntVar>();
+		r1w.add(d);
+		r1w.add(e);
+		r1w.add(f);
+
+		ArrayList<Integer> r1p = new ArrayList<Integer>();
+		r1p.add(-2);
+		r1p.add(-1);
+		r1p.add(1);
+
+		ArrayList<IntVar> r2w = new ArrayList<IntVar>();
+		r2w.add(g);
+		r2w.add(h);
+		r2w.add(i);
+
+		ArrayList<Integer> r2p = new ArrayList<Integer>();
+		r2p.add(-2);
+		r2p.add(-1);
+		r2p.add(3);
+
+		store.impose(new Linear(store, l1w, l1p, "=", 0));
+		store.impose(new Linear(store, r1w, r1p, "=", 0));
+		store.impose(new Linear(store, r2w, r2p, "=", 0));
+
+		// impose that total weight is correct!
+
+		ArrayList<IntVar> allw = new ArrayList<IntVar>();
+		allw.add(a);
+		allw.add(b);
+		allw.add(c);
+		allw.add(d);
+		allw.add(e);
+		allw.add(f);
+		allw.add(g);
+		allw.add(h);
+		allw.add(i);
+
+		ArrayList<Integer> allp = new ArrayList<Integer>();
+		allp.add(-3);
+		allp.add(-3);
+		allp.add(-3);
+		allp.add(2);
+		allp.add(2);
+		allp.add(2);
+		allp.add(3);
+		allp.add(3);
+		allp.add(3);
+
+		store.impose(new Linear(store, allw, allp, "=", 0));
+
+		Search<IntVar> label = new DepthFirstSearch<IntVar>();
+		SelectChoicePoint<IntVar> select = new SimpleSelect<IntVar>(weights, new SmallestDomain<IntVar>(),
+				new IndomainMin<IntVar>());
+
+		label.setSolutionListener(new PrintOutListener<IntVar>());
+		label.getSolutionListener().searchAll(true);
+
+		boolean Result = label.labeling(store, select);
+
+		if (Result) {
+			System.out.println("\n*** Yes");
+			System.out.println("Solution : " + java.util.Arrays.asList(weights));
+		} else
+			System.out.println("\n*** No");
+	}
+}
