@@ -1,6 +1,5 @@
 package lab1;
 
-import org.jacop.core.IntVar;
 import org.jacop.core.Store;
 
 public class Pizza {
@@ -19,15 +18,7 @@ public class Pizza {
 	}
 
 	private static void minCost(int n, int[] price, int m, int[] buy, int[] free) {
-
-		sort(price);
-		for (int i = 0; i < free.length; i++)
-			if (free[i] == 0)
-				buy[i] = 0;
-		sort(buy, free);
-
 		Store store = new Store();
-		IntVar[] pizzas = new IntVar[price.length];
 
 		// System.out.println(
 		// "Number of variables: " + store.size() + "\nNumber of constraints: "
@@ -46,29 +37,4 @@ public class Pizza {
 		// System.out.println("\n*** No");
 	}
 
-	private static void sort(int[] a) {
-		int temp;
-		for (int i = 0; i < a.length; i++)
-			for (int j = 1; j < a.length - i; j++)
-				if (a[j - 1] > a[j]) {
-					temp = a[j];
-					a[j] = a[j - 1];
-					a[j - 1] = temp;
-				}
-	}
-
-	private static void sort(int[] a, int[] b) {
-		int temp;
-		for (int i = 0; i < a.length; i++)
-			for (int j = 1; j < a.length - i; j++)
-				if (a[j - 1] > a[j]) {
-					temp = a[j];
-					a[j] = a[j - 1];
-					a[j - 1] = temp;
-
-					temp = b[j];
-					b[j] = b[j - 1];
-					b[j - 1] = temp;
-				}
-	}
 }

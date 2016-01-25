@@ -10,6 +10,6 @@
 <fullyQualifiedTypeName name="org.jacop.search.SelectChoicePoint"/>
 <fullyQualifiedTypeName name="org.jacop.search.PrintOutListener"/>
 <fullyQualifiedTypeName name="org.jacop.core.Store"/>
-<fullyQualifiedTypeName name="org.jacop.core.IntVar"/>
 <fullyQualifiedTypeName name="org.jacop.constraints.Sum"/>
+<fullyQualifiedTypeName name="org.jacop.core.IntVar"/>
 </qualifiedTypeNameHistroy>
