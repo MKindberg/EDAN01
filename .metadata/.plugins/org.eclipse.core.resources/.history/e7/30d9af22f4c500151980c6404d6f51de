@@ -1,0 +1,256 @@
+package lab1;
+
+import org.jacop.constraints.Constraint;
+import org.jacop.constraints.IfThen;
+import org.jacop.constraints.Min;
+import org.jacop.constraints.PrimitiveConstraint;
+import org.jacop.constraints.SumInt;
+import org.jacop.constraints.SumWeight;
+import org.jacop.constraints.XmulCeqZ;
+import org.jacop.core.IntVar;
+import org.jacop.core.Store;
+import org.jacop.search.DepthFirstSearch;
+import org.jacop.search.IndomainMin;
+import org.jacop.search.PrintOutListener;
+import org.jacop.search.Search;
+import org.jacop.search.SelectChoicePoint;
+import org.jacop.search.SimpleSelect;
+
+public class Main {
+
+	public static void main(String[] args) {
+		long T1, T2, T;
+		T1 = System.currentTimeMillis();
+		pizza(new Data1());
+		T2 = System.currentTimeMillis();
+		T = T2 - T1;
+		System.out.println("\n\t***	Execution time = " + T + " ms");
+	}
+
+	public static void pizza(Data data) {
+
+		int n = data.n;
+		int m = data.m;
+		int[] price = data.price;
+		int[] buy = data.buy;
+
+		Store store = new Store();
+
+		IntVar[][] paid = new IntVar[n][m];
+		IntVar[][] free = new IntVar[n][m];
+
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < m; j++) {
+				paid[i][j] = new IntVar(store, "paid" + i + j, 0, 1);
+				free[i][j] = new IntVar(store, "free" + i + j, 0, 1);
+			}
+
+		for (int i = 0; i < n; i++) {
+			IntVar[] cols = new IntVar[m + m];
+
+			for (int j = 0; j < m; j++) {
+				cols[j] = paid[i][j];
+				cols[j + m] = free[i][j];
+			}
+
+			// only one of each pizza
+			Constraint sumcols = new SumInt(store, cols, "==", new IntVar(store, "sumcolsvar", 1, 1));
+			store.impose(sumcols);
+		}
+
+		for (int j = 0; j < m; j++) {
+			IntVar[] rowsp = new IntVar[n];
+			IntVar[] rowsf = new IntVar[n];
+
+			for (int i = 0; i < n; i++) {
+				rowsp[i] = paid[i][j];
+				rowsf[i] = free[i][j];
+			}
+
+			// sum of pizzas for a cupon should be right or 0
+			Constraint sumrowsplt = new SumInt(store, rowsp, "==", new IntVar(store, "sumrowsvar", 0, data.buy[j]));
+			Constraint sumrowsflt = new SumInt(store, rowsf, "==", new IntVar(store, "sumrowsvar", 0, data.free[j]));
+			store.impose(sumrowsplt);
+			store.impose(sumrowsflt);
+
+			// don't use cupons if you haven't paid all the pizzas
+			PrimitiveConstraint sumrowsp = new SumInt(store, rowsp, "<",
+					new IntVar(store, "sumrowsvar", data.buy[j], data.buy[j]));
+			PrimitiveConstraint sumrowsf = new SumInt(store, rowsf, "==", new IntVar(store, "sumrowsvar", 0, 0));
+			store.impose(new IfThen(sumrowsp, sumrowsf));
+
+			// set min(paid) >= max(free) for any c
+			// Constraint maxrow = new org.jacop.constraints.Max(rowsp, middle);
+		}
+
+		// Skapar matriser som price och free, men med priset inuti
+		IntVar pp[][] = new IntVar[n][m];
+		IntVar fp[][] = new IntVar[n][m];
+		int maxPrice = max(price);
+		IntVar mid = new IntVar(store, max(price), min(price));
+		for (int j = 0; j < m; j++)
+			for (int i = 0; i < n; i++) {
+				pp[i][j] = new IntVar(store, 0, maxPrice);
+				fp[i][j] = new IntVar(store, 0, maxPrice);
+				store.impose(new XmulCeqZ(paid[i][j], price[i], pp[i][j]));
+				store.impose(new XmulCeqZ(free[i][j], price[i], fp[i][j]));
+			}
+
+		for (int i = 0; i < m; i++){
+			store.impose(new Min(pp[i], mid));
+		store.impose(new Min(pp[i], mid));
+		}
+		// for (int k = 0; k < m; k++)
+		// for (int i = 0; i < n; i++)
+		// for (int j = 0; j < n; j++) {
+		// PrimitiveConstraint paidGt0 = new XgtC(pp[j][k], 0);
+		// // PrimitiveConstraint paidGtFree = new
+		// // XmulCeqZ(paid[i][k], price[i] / price[j], free[j][k]);
+		// // PrimitiveConstraint paidGtFree = new XgteqC(new
+		// // IntVar(store, price[i], price[i]), price[j]);
+		//
+		// PrimitiveConstraint paidGtFree = new XgteqY(pp[j][k], fp[i][k]);
+		// Constraint pgtf = new IfThen(paidGt0, paidGtFree);
+		// store.impose(pgtf);
+		// }
+
+		// for (int i = 0; i < n; i++) {
+		// Constraint cost = new LinearInt(store, paid[i], price, "<",
+		// Sum(price));
+		// store.impose(cost);
+		// }
+
+		IntVar[] bought = new IntVar[n];
+		for (int i = 0; i < n; i++)
+			bought[i] = new IntVar(store, 0, 1);
+
+		IntVar[] gotFree = new IntVar[n];
+		for (int i = 0; i < n; i++)
+			gotFree[i] = new IntVar(store, 0, 1);
+
+		for (int i = 0; i < n; i++) {
+			IntVar[] cols = new IntVar[m];
+
+			for (int j = 0; j < m; j++)
+				cols[j] = paid[i][j];
+			store.impose(new SumInt(store, cols, "==", bought[i]));
+
+			cols = new IntVar[m];
+
+			for (int j = 0; j < m; j++)
+				cols[j] = free[i][j];
+			store.impose(new SumInt(store, cols, "==", gotFree[i]));
+		}
+
+		// IntVar[] allPizza = new IntVar[2*m*n];
+		// for(int i=0; i<n; i++) {
+		// for(int j=0; j<m; j++) {
+		// allPizza[j+i*m] = paid[i][j];
+		// allPizza[m*n+j+i*m] = free[i][j];
+		// }
+		// }
+		IntVar[] allPizza = new IntVar[2 * n];
+		for (int i = 0; i < n; i++) {
+			allPizza[i] = bought[i];
+			allPizza[n + i] = gotFree[i];
+		}
+
+		IntVar sumPrice = new IntVar(store, 0, 9000);
+		Constraint cost = new SumWeight(bought, price, sumPrice);
+		store.impose(cost);
+
+		// System.out.println(store);
+
+		Search<IntVar> search = new DepthFirstSearch<IntVar>();
+		SelectChoicePoint<IntVar> select = new SimpleSelect<IntVar>(allPizza, null, new IndomainMin<IntVar>());
+
+		search.setSolutionListener(new PrintOutListener<IntVar>());
+		boolean Result = search.labeling(store, select, sumPrice);
+		if (Result) {
+			// System.out.println(store);
+			System.out.println("\n***Yes");
+			System.out.println("Solution p: " + java.util.Arrays.asList(bought));
+			System.out.println("Solution p: " + java.util.Arrays.asList(gotFree));
+		}
+
+	}
+
+	public static int max(int[] list) {
+		int max = list[0];
+
+		for (int i = 1; i < list.length; i++)
+			if (list[i] > max)
+				max = list[i];
+		return max;
+	}
+
+	public static int min(int[] list) {
+		int min = list[0];
+
+		for (int i = 1; i < list.length; i++)
+			if (list[i] < min)
+				min = list[i];
+		return min;
+	}
+
+	public static int sum(int[] list) {
+		int sum = 0;
+
+		for (int i = 0; i < list.length; i++)
+			sum += list[i];
+
+		return sum;
+	}
+}
+
+class Data {
+	int n;
+	int[] price;
+	int m;
+	int[] buy;
+	int[] free;
+}
+
+class DataTest extends Data {
+
+	public DataTest() {
+		n = 4;
+		price = new int[] { 10, 5, 20, 15 };
+		m = 1;
+		buy = new int[] { 2 };
+		free = new int[] { 2 };
+	}
+}
+
+class Data1 extends Data {
+
+	public Data1() {
+		n = 4;
+		price = new int[] { 10, 5, 20, 15 };
+		m = 2;
+		buy = new int[] { 1, 2 };
+		free = new int[] { 1, 1 };
+	}
+}
+
+class Data2 extends Data {
+
+	public Data2() {
+		n = 4;
+		price = new int[] { 10, 15, 20, 15 };
+		m = 7;
+		buy = new int[] { 1, 2, 2, 8, 3, 1, 4 };
+		free = new int[] { 1, 1, 2, 9, 1, 0, 1 };
+	}
+}
+
+class Data3 extends Data {
+
+	public Data3() {
+		n = 10;
+		price = new int[] { 70, 10, 60, 60, 30, 100, 60, 40, 60, 20 };
+		m = 4;
+		buy = new int[] { 1, 2, 1, 1 };
+		free = new int[] { 1, 1, 1, 0 };
+	}
+}
