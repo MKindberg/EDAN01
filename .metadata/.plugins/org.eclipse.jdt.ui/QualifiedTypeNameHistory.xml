@@ -9,7 +9,15 @@
 <fullyQualifiedTypeName name="org.jacop.search.DepthFirstSearch"/>
 <fullyQualifiedTypeName name="org.jacop.search.SelectChoicePoint"/>
 <fullyQualifiedTypeName name="org.jacop.search.PrintOutListener"/>
-<fullyQualifiedTypeName name="org.jacop.core.Store"/>
 <fullyQualifiedTypeName name="org.jacop.constraints.Sum"/>
+<fullyQualifiedTypeName name="org.jacop.floats.constraints.Min"/>
+<fullyQualifiedTypeName name="org.jacop.constraints.Min"/>
+<fullyQualifiedTypeName name="org.jacop.constraints.Max"/>
 <fullyQualifiedTypeName name="org.jacop.core.IntVar"/>
+<fullyQualifiedTypeName name="org.jacop.core.Store"/>
+<fullyQualifiedTypeName name="org.jacop.constraints.Alldiff"/>
+<fullyQualifiedTypeName name="org.jacop.set.constraints.XeqA"/>
+<fullyQualifiedTypeName name="org.jacop.constraints.XeqC"/>
+<fullyQualifiedTypeName name="org.jacop.search.SimpleMatrixSelect"/>
+<fullyQualifiedTypeName name="org.jacop.constraints.Reified"/>
 </qualifiedTypeNameHistroy>

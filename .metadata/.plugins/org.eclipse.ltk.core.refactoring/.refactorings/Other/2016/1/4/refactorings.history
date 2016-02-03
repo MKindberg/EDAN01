@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;col1&apos; in &apos;Sudoku.solve(...)&apos; to &apos;col&apos;&#x0D;&#x0A;- Original project: &apos;Other&apos;&#x0D;&#x0A;- Original element: &apos;Sudoku.solve(int[][]).col1&apos;&#x0D;&#x0A;- Renamed element: &apos;col1&apos;&#x0D;&#x0A;- Update references to refactored element" description="Rename local variable &apos;col1&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src&lt;{Sudoku.java[Sudoku~solve~\[\[I@col1!693!724!702!705!\[QIntVar;!0!false" name="col" references="true" stamp="1454010248461" version="1.0"/>
+</session>
