@@ -73,7 +73,7 @@ public class Main {
 			store.impose(new XeqY(d[i], v));
 		}
 
-		IntVar distance = new IntVar(store, 0, 1000);
+		IntVar distance = new IntVar(store, 0, 100000000);
 		Constraint distanceCost = new Sum(d, distance);
 		store.impose(distanceCost);
 		Search<IntVar> search = new DepthFirstSearch<IntVar>();

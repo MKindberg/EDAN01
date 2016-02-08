@@ -72,7 +72,6 @@ public class Main {
 			store.impose(new Element(x[0][i], distances[i], v, 0));
 			store.impose(new XeqY(d[i], v));
 		}
-
 		IntVar distance = new IntVar(store, 0, 1000);
 		Constraint distanceCost = new Sum(d, distance);
 		store.impose(distanceCost);

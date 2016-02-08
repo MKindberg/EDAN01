@@ -66,13 +66,13 @@ public class Main {
 		}
 
 		IntVar[] d = new IntVar[graph_size];
-		for (int i = 0; i < graph_size; i++) {
-			d[i] = new IntVar(store, "dist" + i, 0, 1000);
-			IntVar v = new IntVar(store, 0, 100);
-			store.impose(new Element(x[0][i], distances[i], v, 0));
-			store.impose(new XeqY(d[i], v));
-		}
-
+		for (int j = 0; j < x.length; j++)
+			for (int i = 0; i < graph_size; i++) {
+				d[i] = new IntVar(store, "dist" + i, 0, 1000);
+				IntVar v = new IntVar(store, 0, 100);
+				store.impose(new Element(x[0][i], distances[i], v, 0));
+				store.impose(new XeqY(d[i], v));
+			}
 		IntVar distance = new IntVar(store, 0, 1000);
 		Constraint distanceCost = new Sum(d, distance);
 		store.impose(distanceCost);
