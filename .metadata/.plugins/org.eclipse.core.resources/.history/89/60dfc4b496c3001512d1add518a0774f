@@ -1,8 +1,0 @@
-package lab1;
-
-public class Pizza {
-
-	private static void minCost() {
-		Store store = new Store();
-	}
-}
