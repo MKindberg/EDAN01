@@ -1,4 +1,4 @@
-package logistics;
+package Lab2;
 
 class Data {
 	int graph_size;
