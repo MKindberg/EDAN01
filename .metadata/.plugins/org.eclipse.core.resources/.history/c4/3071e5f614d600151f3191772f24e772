@@ -1,0 +1,45 @@
+package lab4;
+
+import org.jacop.core.IntVar;
+import org.jacop.core.Store;
+
+public class Ar {
+	public static void main(String[] args) {
+		long T1, T2, T;
+		T1 = System.currentTimeMillis();
+		auto_reg(new ar_1_1());
+		T2 = System.currentTimeMillis();
+		T = T2 - T1;
+		System.out.println("\n\t***	Execution time = " + T + " ms");
+	}
+
+	public static void auto_reg(Data data) {
+		Store store = new Store();
+
+		int n = data.n;
+		int del_add = data.del_add;
+		int del_mul = data.del_mul;
+		int num_add = data.number_add;
+		int num_mul = data.number_mul;
+
+		int[] last = data.last;
+		int[] add = data.add;
+		int[] mul = data.mul;
+		int[][] dep = data.dependencies;
+
+		IntVar[] o1 = new IntVar[n];
+		IntVar[] o2 = new IntVar[n];
+		IntVar[] l1 = new IntVar[n];
+		IntVar[] l2 = new IntVar[n];
+
+		for (int i = 0; i < o1.length; i++) {
+			o1[i] = new IntVar(store, 0, 1000);
+			l2[i] = new IntVar(store, 1, 1);
+		}
+		for (int i = 0; i < add.length; i++)
+			o2[add[i] - 1] = new IntVar(store, 0, num_add - 1);
+
+		for (int i = 0; i < mul.length; i++)
+			o2[mul[i] - 1] = new IntVar(store, num_add, num_mul - 1);
+	}
+}
