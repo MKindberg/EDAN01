@@ -1,0 +1,17 @@
+package lab5;
+
+import lab4.ar_1_3;
+
+public class CityPlanning {
+		public static void main(String[] args) {
+			long T1, T2, T;
+			T1 = System.currentTimeMillis();
+			
+			T2 = System.currentTimeMillis();
+			T = T2 - T1;
+			System.out.println("\n\t***	Execution time = " + T + " ms");
+		}
+		public static void plan(Data data){
+			
+		}
+}
