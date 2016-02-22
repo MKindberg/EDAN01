@@ -1,0 +1,12 @@
+package lab4;
+
+public class Ar {
+	public static void main(String[] args) {
+		long T1, T2, T;
+		T1 = System.currentTimeMillis();
+		logistics(new Data3());
+		T2 = System.currentTimeMillis();
+		T = T2 - T1;
+		System.out.println("\n\t***	Execution time = " + T + " ms");
+	}
+}

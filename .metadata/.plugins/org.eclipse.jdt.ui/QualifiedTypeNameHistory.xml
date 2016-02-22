@@ -13,11 +13,14 @@
 <fullyQualifiedTypeName name="org.jacop.floats.constraints.Min"/>
 <fullyQualifiedTypeName name="org.jacop.constraints.Min"/>
 <fullyQualifiedTypeName name="org.jacop.constraints.Max"/>
-<fullyQualifiedTypeName name="org.jacop.core.IntVar"/>
-<fullyQualifiedTypeName name="org.jacop.core.Store"/>
 <fullyQualifiedTypeName name="org.jacop.constraints.Alldiff"/>
 <fullyQualifiedTypeName name="org.jacop.set.constraints.XeqA"/>
 <fullyQualifiedTypeName name="org.jacop.constraints.XeqC"/>
 <fullyQualifiedTypeName name="org.jacop.search.SimpleMatrixSelect"/>
 <fullyQualifiedTypeName name="org.jacop.constraints.Reified"/>
+<fullyQualifiedTypeName name="org.jacop.core.IntVar"/>
+<fullyQualifiedTypeName name="org.jacop.core.Store"/>
+<fullyQualifiedTypeName name="org.jacop.constraints.SumWeight"/>
+<fullyQualifiedTypeName name="org.jacop.search.IndomainMax"/>
+<fullyQualifiedTypeName name="org.jacop.constraints.Element"/>
 </qualifiedTypeNameHistroy>
