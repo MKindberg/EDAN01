@@ -46,7 +46,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-.metadata
+.metadata/
 bin/
 tmp/
 *.tmp
